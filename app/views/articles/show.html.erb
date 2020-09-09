@@ -1,0 +1,40 @@
+<h1><%= @article.title %></h1>
+<p>
+	<%= @article.text %>
+</p>
+
+	<h2>Comments:</h2>
+
+<% @article.comments.each do |comment| %>
+	<p>
+	<i><%= comment.author %> said:</i><br />
+	</p>
+	<p>
+		<%= comment.body %>	
+	</p>
+	<hr />
+<% end %>
+
+<% if user_signed_in? %>
+	<h2>Add comments:</h2>
+
+<p>
+<%= form_for([@article, @article.comments.build]) do |f| %>
+	<p>
+		Leave your comment here, <%= current_user.username %>:<br />
+		<%= f.hidden_field :author, value: current_user.username %>
+	</p>
+
+	<p>
+		<%= f.text_area :body %>
+	</p>
+
+	<p>
+		<%= f.submit %>
+	</p>
+<% end %>
+</p>
+<% else %>
+	<p> Please, <%= link_to 'Sign In', new_user_session_path %> to leave a comment.
+	</p>
+<% end %>
